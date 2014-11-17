@@ -1,3 +1,5 @@
+require_relative 'tag'
+
 class Link
 
   include DataMapper::Resource
@@ -5,5 +7,6 @@ class Link
   property :id,    Serial
   property :title, String
   property :url,   String
+  has n, :tags, :through => Resource
 
 end
