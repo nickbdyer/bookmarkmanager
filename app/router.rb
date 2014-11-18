@@ -12,8 +12,10 @@ class BookmarkManager < Sinatra::Base
 
   include Helpers
 
+
   enable :sessions
   set :session_secret, 'super secret'
+  set :public_folder, Proc.new { File.join(root, "..", "public") }
   use Rack::Flash
 
   get '/' do
@@ -48,7 +50,7 @@ class BookmarkManager < Sinatra::Base
       session[:user_id] = @user.id
       redirect to('/')
     else
-      flash[:notice] = "Sorry, your passwords don't match"
+      flash.now[:errors] = @user.errors.full_messages
       erb :"users/new"
     end
   end

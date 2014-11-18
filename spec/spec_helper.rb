@@ -9,7 +9,7 @@ require_relative '../app/router.rb'
 require 'database_cleaner'
 require 'capybara/rspec'
 
-Capybara.app = BookmarkManager
+Capybara.app = BookmarkManager.new
 
 
 
