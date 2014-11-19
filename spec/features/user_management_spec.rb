@@ -70,17 +70,21 @@ feature "User is signed out" do
 
   before(:each) do
     User.create(:email => "test@test.com",
-                :password => 'test',
-                :password_confirmation => 'test')
+                       :password => 'test',
+                       :password_confirmation => 'test')
   end
 
   scenario "and forgets their password" do
     visit '/sessions/new'
+    user = User.first(:email => "test@test.com")
     click_button "Forgot password?"
     expect(page).to have_content("Please enter your email")
     fill_in 'email', :with => "test@test.com"
     click_button "Reset Password"
     expect(page).to have_content("Password reset email has been sent")
+    expect(user.password_token.nil?).to be false
+    p user.password_token_timestamp
+    expect(user.password_token_timestamp.nil?).to be false
   end
 end
 
