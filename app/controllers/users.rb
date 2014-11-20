@@ -18,11 +18,11 @@ class BookmarkManager
     end
   end
 
-  get '/users/reset_password' do
-    erb :"users/reset_password"
+  get '/users/forgot_password' do
+    erb :"users/forgot_password"
   end
 
-  post '/users/reset_password' do
+  post '/users/forgot_password' do
     user = User.first(:email => params[:email])
     user.password_token = (1..64).map{[*'0'..'9', *'a'..'z', *'A'..'Z'].sample}.join
     user.password_token_timestamp = Time.now
@@ -30,6 +30,23 @@ class BookmarkManager
     flash.now[:notice] = "Password reset email has been sent"
     @links = Link.all
     erb :index 
+  end
+
+  get '/users/reset_password/:token' do
+    @token = params[:token]
+    erb :"users/new_password"
+  end
+
+  post '/users/reset_password' do
+    user = User.first(:password_token => params[:password_token])
+    user.update(password: params[:password], 
+                password_confirmation: params[:password_confirmation],
+                password_token: nil,
+                password_token_timestamp: nil)
+
+    flash.now[:notice] = "Your password has been reset."
+    @links = Link.all
+    erb :index
   end
 
 end

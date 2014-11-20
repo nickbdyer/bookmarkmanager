@@ -79,14 +79,40 @@ feature "User is signed out" do
     user = User.first(:email => "test@test.com")
     click_button "Forgot password?"
     expect(page).to have_content("Please enter your email")
-    fill_in 'email', :with => "test@test.com"
-    click_button "Reset Password"
+    fill_in 'email', :with => user.email
+    click_button "Forgot Password"
     expect(page).to have_content("Password reset email has been sent")
+    user = User.first(:email => "test@test.com")
     expect(user.password_token.nil?).to be false
-    p user.password_token_timestamp
     expect(user.password_token_timestamp.nil?).to be false
   end
+
+  scenario "and has been sent a password reset link" do
+    user = User.first(:email => "test@test.com")
+    old_digest = user.password_digest
+    # p "====" * 20
+    # p old_digest
+    visit '/sessions/new'
+    click_button "Forgot password?"
+    fill_in 'email', :with => user.email
+    click_button "Forgot Password"
+    user = User.first(:email => "test@test.com")
+    visit "/users/reset_password/#{user.password_token}"
+    expect(page).to have_content("Please enter new password")
+    fill_in 'password', :with => "orange"
+    fill_in 'password_confirmation', :with => "orange"
+    click_button "Reset Password"
+    # p "****" * 20
+    user = User.first(:email => "test@test.com")
+    # p user.password_digest
+    expect(old_digest == user.password_digest).to be false
+    expect(page).to have_content "Your password has been reset."
+    expect(user.password_token).to eq nil
+    expect(user.password_token_timestamp).to eq nil
+  end
 end
+
+
 
 
 

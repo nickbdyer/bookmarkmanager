@@ -3,14 +3,30 @@
 <html>
   <head>
     <title> Bookmark Manager </title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/application.css">
     <link rel="stylesheet" type="text/css" href="../css/application.css">
   </head>
   <body>
+    <nav>
+      <h1> Bookmark Manager </h1>
+      <menuitem >
+        <input id="signin" type="Submit" value="Sign In">
+        <input id="signup" type="Submit" value="Sign Up">
+      </menuitem>
+    </nav>
+
+    <header>
+      <h2> Welcome to Bookmark Manager </h2>
+    </header>
+
     <%= partial :welcome_message %>
 
     <%= partial :flash %>
 
     <%= yield %>
+
+    <footer></footer>
   </body>
 </html>
