@@ -1,7 +1,9 @@
 require 'spec_helper'
 require_relative '../helpers/session'
+require_relative '../helpers/password'
 
 include SessionHelpers
+include PasswordHelpers
 
 feature "User signs up" do
 
@@ -76,12 +78,8 @@ feature "User is signed out" do
   end
 
   scenario "and forgets their password" do
-    visit '/sessions/new'
     user = User.first(:email => "test@test.com")
-    click_button "Forgot password?"
-    expect(page).to have_content("Please enter your email")
-    fill_in 'email', :with => user.email
-    click_button "Forgot Password"
+    request_password_reset(user)
     expect(page).to have_content("Password reset email has been sent")
     user = User.first(:email => "test@test.com")
     expect(user.password_token.nil?).to be false
@@ -91,10 +89,7 @@ feature "User is signed out" do
   scenario "and resets their password within an hour." do
     user = User.first(:email => "test@test.com")
     old_digest = user.password_digest
-    visit '/sessions/new'
-    click_button "Forgot password?"
-    fill_in 'email', :with => user.email
-    click_button "Forgot Password"
+    request_password_reset(user)
     user = User.first(:email => "test@test.com")
     visit "/users/reset_password/#{user.password_token}"
     expect(page).to have_content("Please enter new password")
@@ -111,10 +106,7 @@ feature "User is signed out" do
   scenario "and tries to reset their password after an hour." do
     user = User.first(:email => "test@test.com")
     old_digest = user.password_digest
-    visit '/sessions/new'
-    click_button "Forgot password?"
-    fill_in 'email', :with => user.email
-    click_button "Forgot Password"
+    request_password_reset(user)
     user = User.first(:email => "test@test.com")
     time = Time.now + 3601
     Timecop.freeze(time)
