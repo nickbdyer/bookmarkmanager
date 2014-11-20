@@ -72,6 +72,7 @@ feature "User is signed out" do
     User.create(:email => "test@test.com",
                        :password => 'test',
                        :password_confirmation => 'test')
+    allow_any_instance_of(User).to receive(:send_simple_message).and_return(nil)
   end
 
   scenario "and forgets their password" do
@@ -90,8 +91,6 @@ feature "User is signed out" do
   scenario "and resets their password within an hour." do
     user = User.first(:email => "test@test.com")
     old_digest = user.password_digest
-    # p "====" * 20
-    # p old_digest
     visit '/sessions/new'
     click_button "Forgot password?"
     fill_in 'email', :with => user.email
@@ -102,9 +101,7 @@ feature "User is signed out" do
     fill_in 'password', :with => "orange"
     fill_in 'password_confirmation', :with => "orange"
     click_button "Reset Password"
-    # p "****" * 20
     user = User.first(:email => "test@test.com")
-    # p user.password_digest
     expect(old_digest == user.password_digest).to be false
     expect(page).to have_content "Your password has been reset."
     expect(user.password_token).to eq nil
@@ -114,8 +111,6 @@ feature "User is signed out" do
   scenario "and tries to reset their password after an hour." do
     user = User.first(:email => "test@test.com")
     old_digest = user.password_digest
-    # p "====" * 20
-    # p old_digest
     visit '/sessions/new'
     click_button "Forgot password?"
     fill_in 'email', :with => user.email

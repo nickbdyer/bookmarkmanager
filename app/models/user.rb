@@ -1,6 +1,9 @@
 require 'bcrypt'
+require 'mailgun'
 
 class User
+
+  AC_KEY = ENV['MAILGUN_AC']
 
   include DataMapper::Resource
 
@@ -30,4 +33,13 @@ class User
     end
   end
   
+  def send_simple_message
+    RestClient.post "https://#{AC_KEY}"\
+    "@api.mailgun.net/v2/sandbox3900260de0784f0eb0f3ec80a443c03f.mailgun.org/messages",
+    :from => "Mailgun Sandbox <postmaster@sandbox3900260de0784f0eb0f3ec80a443c03f.mailgun.org>",
+    :to => "Nick <nbdyer@gmail.com>",
+    :subject => "Password Reset",
+    :text => "Congratulations Nick, you just sent an email with Mailgun! Follow this link to reset your password. http://localhost:9292/users/reset_password/#{self.password_token} "
+  end
+
 end

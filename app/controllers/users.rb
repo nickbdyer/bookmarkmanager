@@ -27,6 +27,7 @@ class BookmarkManager
     user.password_token = (1..64).map{[*'0'..'9', *'a'..'z', *'A'..'Z'].sample}.join
     user.password_token_timestamp = Time.now
     user.save
+    user.send_simple_message
     flash.now[:notice] = "Password reset email has been sent"
     @links = Link.all
     erb :index 
