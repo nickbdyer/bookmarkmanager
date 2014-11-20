@@ -126,7 +126,6 @@ feature "User is signed out" do
     visit "/users/reset_password/#{user.password_token}"
     expect(page).to have_content("Password reset request timed out. Please request new link.")
     expect(page).to have_content("Please enter your email")
-
   end
 
 end
