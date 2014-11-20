@@ -13,4 +13,5 @@ group :development, :test do
   gem 'cucumber-sinatra'
   gem 'cucumber'
   gem 'database_cleaner'
+  gem 'timecop'
 end

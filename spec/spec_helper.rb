@@ -8,6 +8,7 @@ ENV["RACK_ENV"] = 'test' # because we need to know what database to work with
 require_relative '../app/router.rb'
 require 'database_cleaner'
 require 'capybara/rspec'
+require 'timecop'
 
 Capybara.app = BookmarkManager.new
 

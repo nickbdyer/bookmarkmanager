@@ -87,7 +87,7 @@ feature "User is signed out" do
     expect(user.password_token_timestamp.nil?).to be false
   end
 
-  scenario "and has been sent a password reset link" do
+  scenario "and resets their password within an hour." do
     user = User.first(:email => "test@test.com")
     old_digest = user.password_digest
     # p "====" * 20
@@ -110,6 +110,25 @@ feature "User is signed out" do
     expect(user.password_token).to eq nil
     expect(user.password_token_timestamp).to eq nil
   end
+
+  scenario "and tries to reset their password after an hour." do
+    user = User.first(:email => "test@test.com")
+    old_digest = user.password_digest
+    # p "====" * 20
+    # p old_digest
+    visit '/sessions/new'
+    click_button "Forgot password?"
+    fill_in 'email', :with => user.email
+    click_button "Forgot Password"
+    user = User.first(:email => "test@test.com")
+    time = Time.now + 3601
+    Timecop.freeze(time)
+    visit "/users/reset_password/#{user.password_token}"
+    expect(page).to have_content("Password reset request timed out. Please request new link.")
+    expect(page).to have_content("Please enter your email")
+
+  end
+
 end
 
 
