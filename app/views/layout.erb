@@ -8,17 +8,18 @@
 
   </head>
   <body>
-    <nav>
-      <h1> Bookmark Manager </h1>
-      <menuitem >
-        <input id="signin" type="Submit" value="Sign In">
-        <input id="signup" type="Submit" value="Sign Up">
-      </menuitem>
-    </nav>
-
     <header>
-      <h2> Welcome to Bookmark Manager </h2>
+      <nav>
+          <a href="/"><h1> Bookmark Manager </h1></a>
+        <menuitem>
+          <a href="/links/new"><input id="addlink" type="Submit" value="Add Link"></a>
+          <a href="/sessions/new"><input id="signin" type="Submit" value="Sign In"></a>
+          <a href="/users/new"><input id="signup" type="Submit" value="Sign Up"></a>
+        </menuitem>
+      </nav>
     </header>
+  
+    <br>
 
     <%= partial :welcome_message %>
 
