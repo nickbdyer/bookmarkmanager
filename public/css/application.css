@@ -98,3 +98,37 @@ menuitem {
     float: right;
     font-size: 12px;
   }
+  
+  #notice {
+  text-align: center;
+  margin: 5px;
+  padding: 5px;
+  background-color: rgba(67,183,120,0.75);
+  border-radius: 4px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.4);
+  color: white;
+}
+
+  footer {
+  display: flex;
+  background-color: white;
+  color: black
+}
+
+  footer > * {
+    margin: auto inherit;
+  }
+
+  footer img {
+    /* http://stackoverflow.com/questions/10658475/3px-extra-height-on-a-div-with-an-image-inside-it */
+    vertical-align: top;
+  }
+
+  footer #technologies {
+    -webkit-flex: 1;
+    flex: 1;
+  }
+
+  footer p {
+    padding: 5px 25px;
+  }
