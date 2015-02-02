@@ -1,5 +1,7 @@
 #Bookmark Manager
 
+[![Code Climate](https://codeclimate.com/github/nickbdyer/bookmarkmanager/badges/gpa.svg)](https://codeclimate.com/github/nickbdyer/bookmarkmanager)
+
 Week 4 at Makers Academy
 
 ###The Problem
